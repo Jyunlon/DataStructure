@@ -19,16 +19,7 @@ void ctext_assign(char **ctext, const char *source) {
 }
 
 void ctext_malloc(char **ctext,int capcity){
-	ctext_clear(ctext);
 	*ctext = (char *)malloc(sizeof(char)*capcity);
-}
-
-void ctext_clear(char **ctext){
-	if (*ctext) {
-		(*ctext)[0] = '\0';
-		free(*ctext);
-		*ctext = NULL;
-	}
 }
 
 int ctext_compare(const char *left, const char *right);
