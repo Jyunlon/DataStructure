@@ -17,6 +17,14 @@ void ctext_assign(char **ctext, const char *source) {
 	(*ctext)[length] = '\0';
 }
 
+void ctext_clear(char **ctext){
+	if (*ctext) {
+		(*ctext)[0] = '\0';
+		free(*ctext);
+		*ctext = NULL;
+	}
+}
+
 int ctext_compare(const char *left, const char *right);
 
 void ctext_concat(char **result, const char *left, const char *right) {
