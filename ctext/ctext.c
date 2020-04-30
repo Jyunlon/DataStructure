@@ -10,11 +10,17 @@ int ctext_length(const char *ctext) {
 
 void ctext_assign(char **ctext, const char *source) {
 	int length = ctext_length(source);
-	*ctext = (char *)malloc(sizeof(char)*(length + 1));
+	ctext_malloc(ctext,length+1);
+	
 	for (int i = 0; i < length; ++i) {
 		(*ctext)[i] = source[i];
 	}
 	(*ctext)[length] = '\0';
+}
+
+void ctext_malloc(char **ctext,int capcity){
+	ctext_clear(ctext);
+	*ctext = (char *)malloc(sizeof(char)*capcity);
 }
 
 void ctext_clear(char **ctext){
@@ -31,10 +37,8 @@ void ctext_concat(char **result, const char *left, const char *right) {
 	int llen = ctext_length(left);
 	int rlen = ctext_length(right);
 	int len = llen + rlen;
-	if (*result) {
-		free(*result);
-	}
-	*result = (char *)malloc(sizeof(char)*(len + 1));
+	ctext_malloc(result,len + 1);
+
 	for (int i = 0; i < len;++i) {
 		if (i < llen) {
 			(*result)[i] = left[i];
@@ -47,10 +51,8 @@ void ctext_concat(char **result, const char *left, const char *right) {
 }
 
 void ctext_intercept(char **result, const char *source, int start, int length) {
-	if (*result) {
-		free(*result);
-	}
-	*result = (char *)malloc(sizeof(char)*(length + 1));
+	ctext_malloc(result,length + 1);
+
 	for (int i = 0; i < length; ++i) {
 		(*result)[i] = source[i + start];
 	}
@@ -60,6 +62,7 @@ void ctext_intercept(char **result, const char *source, int start, int length) {
 int ctext_match_bruteforce(const char *source, const char *pattern,int start) {
 	int slen = ctext_length(source);
 	int plen = ctext_length(pattern);
+	
 	int i = start, j = 0;
 	while (i < slen&&j<plen) {
 		if (source[i]==pattern[j]) {
@@ -76,14 +79,12 @@ int ctext_match_bruteforce(const char *source, const char *pattern,int start) {
 }
 
 void ctext_replace(char **result, const char *source, const char *pattern, const char *replace) {
-	if (*result) {
-		free(*result);
-	}
 	int slen = ctext_length(source);
 	int plen = ctext_length(pattern);
 	int rlen = ctext_length(replace);
 	int len = slen + rlen - plen;
-	*result = (char *)malloc(sizeof(char)*(len + 1));
+	ctext_malloc(result,len + 1);
+
 	int position = ctext_match_bruteforce(source, pattern, 0);
 	for (int i = 0; i < len;++i) {
 		if (i < position) {
@@ -100,12 +101,10 @@ void ctext_replace(char **result, const char *source, const char *pattern, const
 }
 
 void ctext_insert(char **result, const char *source, const char *insert, int position, int length) {
-	if (*result) {
-		free(*result);
-	}
 	int slen = ctext_length(source);
 	int rlen = slen + length;
-	*result = (char *)malloc(sizeof(char)*(rlen + 1));
+	ctext_malloc(result, rlen + 1);
+	
 	for (int i = 0; i < rlen; ++i) {
 		if (i < position) {
 			(*result)[i] = source[i];
@@ -121,12 +120,10 @@ void ctext_insert(char **result, const char *source, const char *insert, int pos
 }
 
 void ctext_remove(char **result, const char *source, int position, int length) {
-	if (*result) {
-		free(*result);
-	}
 	int slen = ctext_length(source);
 	int rlen = slen - length;
-	*result = (char *)malloc(sizeof(char)*(rlen + 1));
+	ctext_malloc(result,rlen + 1);
+	
 	for (int i = 0; i < rlen;++i) {
 		if (i < position) {
 			(*result)[i] = source[i];
