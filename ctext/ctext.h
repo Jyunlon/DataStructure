@@ -3,7 +3,7 @@
 int ctext_length(const char *ctext);
 void ctext_assign(char **ctext, const char *source);
 void ctext_malloc(char **ctext,int capcity);
-void ctext_clear(char **ctext);
+void ctext_free(char **ctext);
 int ctext_compare(const char *left,const char *right);
 void ctext_concat(char **result,const char *left,const char *right);
 void ctext_intercept(char **result,const char *source,int start,int length);
